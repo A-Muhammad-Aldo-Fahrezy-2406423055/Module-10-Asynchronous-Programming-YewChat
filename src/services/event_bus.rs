@@ -31,7 +31,7 @@ impl Agent for EventBus {
         match msg {
             Request::EventBusMsg(s) => {
                 for sub in self.subscribers.iter() {
-                    self.link.respond(*sub, s.clone())
+                    self.link.respond(*sub, s.clone());
                 }
             }
         }

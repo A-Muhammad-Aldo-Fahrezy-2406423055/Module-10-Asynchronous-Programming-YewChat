@@ -1,21 +1,37 @@
 # YewChat 💬
 
-> Source code for [Let’s Build a Websocket Chat Project With Rust and Yew 0.19 🦀](https://fsjohnny.medium.com/lets-build-a-websockets-project-with-rust-and-yew-0-19-60720367399f)
+# Experiment 3.1: Original code
 
-## Install
+## How to run:
 
-1. Install the required toolchain dependencies:
-   ```npm i```
+First, start the WebSocket server (SimpleWebsocketServer) in one terminal:
+```bash
+npm start
+```
 
-2. Follow the YewChat post!
+Then, start the YewChat frontend in another terminal:
+```bash
+npm start
+```
 
-## Branches
+Open http://localhost:8000 in the browser, enter a username, and start chatting.
 
-This repository is divided to branches that correspond to the blog post sections:
+---
 
-* main - The starter code.
-* routing - The code at the end of the Routing section.
-* components-part1 - The code at the end of the Components-Phase 1 section.
-* websockets - The code at the end of the Hello Websockets! section.
-* components-part2 - The code at the end of the Components-Phase 2 section.
-* websockets-part2 - The code at the end of the WebSockets-Phase 2 section.
+## Screenshot - Server Terminal:
+
+![Experiment 3.1 - Server Terminal](assets/images/3.1:%20Original%20code%20[server%20terminal].png)
+
+## Screenshot - Client Terminal:
+
+![Experiment 3.1 - Client Terminal](assets/images/3.1:%20Original%20code%20[client%20terminal].png)
+
+## Screenshot - Browser:
+
+![Experiment 3.1 - Browser](assets/images/3.1:%20Original%20code%20[browser].png)
+
+---
+
+## What happens:
+
+The SimpleWebsocketServer listens on port 8080 and logs ws connected for every client that joins. The YewChat frontend is a Rust/Yew application compiled to WebAssembly and served via webpack on port 8000. When two browser tabs are opened with different usernames (aldo and aldo-clone), both users appear in the Users panel. Messages typed in one tab are broadcast to all connected clients in real time through the WebSocket connection, demonstrating full duplex asynchronous communication between the browser and the server.
