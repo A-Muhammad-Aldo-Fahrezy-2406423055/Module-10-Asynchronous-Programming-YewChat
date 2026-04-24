@@ -34,65 +34,35 @@ Open http://localhost:8000 in the browser, enter a username, and start chatting.
 
 ## What happens:
 
-The SimpleWebsocketServer listens on port 8080 and logs ws connected for every client that joins. The YewChat frontend is a Rust/Yew application compiled to WebAssembly and served via webpack on port 8000. When two browser tabs are opened with different usernames (aldo and aldo-clone), both users appear in the Users panel. Messages typed in one tab are broadcast to all connected clients in real time through the WebSocket connection, demonstrating full duplex asynchronous communication between the browser and the server.
+The SimpleWebsocketServer listens on port 8080 and logs ws connected for every client that joins. The YewChat frontend is a Rust and Yew application compiled to WebAssembly and served via webpack on port 8000. When two browser tabs are opened with different usernames (aldo and aldo-clone), both users appear in the Users panel. Messages typed in one tab are broadcast to all connected clients in real time through the WebSocket connection, demonstrating full duplex asynchronous communication between the browser and the server.
 
 ---
 
 # Experiment 3.2: Be Creative!
 
-In this experiment, I transformed the YewChat client into a sophisticated, minimal, and modern communication tool.
+## What was changed:
 
-### New Features:
+Several UI and UX improvements were made to the YewChat webclient to make it more polished and modern:
 
-- Smart Translate
+- Redesigned header
 
-Added a built-in translation toggle for every message. With one click, messages are processed through a mock translation engine (currently demonstrating with reversed text) to show how a global chat would look.
+Added a YewChat brand title with a blue online indicator dot and a Session active as label so users always know which account they are logged in as.
 
-- Elegant UI Redesign
+- Renamed sidebar label
 
-Replaced loud gradients with a professional Slate and Indigo theme. This provides a cleaner look that emphasizes content over distracting colors.
+Changed Users to ONLINE USERS with a green dot indicator next to each username to show active presence.
 
-- Minimalist Login
+- Distinct message bubbles
 
-A clean, high-contrast white card design with a dedicated brand icon and improved typography. This makes the first interaction with the app feel more premium.
+Own messages now appear in dark bubbles aligned to the right, while received messages use light bubbles on the left, making it visually clear which messages belong to the current user.
 
-- Modern Chat Bubbles
+- Improved input placeholder
 
-Own messages now appear in dark bubbles aligned to the right, while received messages use crisp white bubbles on the left. This features soft shadows and refined spacing for better legibility.
-
-- Glassmorphism Header
-
-Added a YewChat brand title with a blue online indicator dot and a semi-transparent, blurred header for a premium feel.
-
-- Enhanced Sidebar
-
-Renamed sidebar to ONLINE USERS with grayscale avatars that come to life on hover and green status indicators to show active presence.
-
-### UX Improvements:
-
-- Interactive Translation
-
-Hover over any message to reveal the Translate action. This keeps the interface clean while keeping powerful features accessible.
-
-- Improved Responsiveness
-
-Better spacing and padding for a comfortable reading experience. The layout adapts better to different message lengths.
-
-- Keyboard Support
-
-Full Enter key support for seamless message sending. This allows for a much faster conversational flow.
-
-- Persistent History
-
-Message history is now preserved across login and logout sessions by utilizing a global context. This solves the problem of losing data when switching users.
-
-- Echo Fix
-
-Eliminated duplicate self-messages for a cleaner experience. Users no longer see their own broadcasted messages returned to them in the chat log.
+Changed to Compose a message for a more conversational feel.
 
 - Sign Out button
 
-Added a SIGN OUT button at the bottom left of the sidebar so users can leave the session cleanly. This replaces the need to manually navigate away from the chat page.
+Added a SIGN OUT button at the bottom left of the sidebar so users can leave the session cleanly.
 
 ---
 
@@ -112,4 +82,44 @@ Added a SIGN OUT button at the bottom left of the sidebar so users can leave the
 
 ## Explanation:
 
-The creative modifications focused on improving the user experience without breaking the underlying WebSocket functionality. The dark message bubbles for own messages follow a modern chat convention that makes conversations much easier to follow. The Session active as label in the header solves a common confusion in multi-tab usage where users forget which username they logged in with. The SIGN OUT button was added because the original code had no way to return to the login page without manually navigating, which felt incomplete. All changes were made in the Yew component files using Tailwind CSS utility classes, keeping the Rust and WebAssembly architecture intact.
+The creative modifications focused on improving the user experience without breaking the underlying WebSocket functionality. The dark message bubbles for own messages follow a modern chat convention (similar to WhatsApp and iMessage) that makes conversations much easier to follow. The Session active as label in the header solves a common confusion in multi tab usage where users forget which username they logged in with. The SIGN OUT button was added because the original code had no way to return to the login page without manually navigating, which felt incomplete. All changes were made in the Yew component files using Tailwind CSS utility classes, keeping the Rust and WebAssembly architecture intact.
+
+---
+
+# Bonus: Technical Refinements and Bug Fixes
+
+In addition to the UI changes, I implemented several advanced features to improve the stability and logic of the application.
+
+## How it was done:
+
+- Smart Translate
+
+I added a built-in translation toggle for every message. When triggered, the message is processed through a mock translation engine to demonstrate how a globalized chat interface would function.
+
+- Persistent History
+
+I refactored the application state to move the message history into a global context. This ensures that chat logs are preserved even when a user signs out and signs back in.
+
+- Echo Fix
+
+I updated the client logic to prevent the browser from displaying a duplicate copy of messages sent by the user. The client now intelligently handles its own broadcasted messages.
+
+- Ghost Connection Eviction
+
+I implemented a session management system on the server that automatically identifies and closes old connections when a nickname is reclaimed. This prevents the double message bug that occurs when users log back in without a clean disconnect.
+
+---
+
+## Screenshot - Rust WebSocket Server:
+
+![Bonus - Rust Server](assets/images/Bonus:%20Rust%20Websocket%20server%20for%20YewChat!%20server.png)
+
+## Screenshot - YewChat Browser:
+
+![Bonus - Browser](assets/images/Bonus:%20Rust%20Websocket%20server%20for%20YewChat!%20browser.png)
+
+---
+
+## Explanation:
+
+The screenshots demonstrate the successful integration of the Rust asynchronous server with the YewChat frontend. The server terminal shows active logs for user registration and message broadcasting while handling the JSON protocol. The browser screenshot displays the modern chat interface correctly rendering messages received from the Rust backend. This setup confirms that the ghost eviction and persistent state logic are functioning as intended within the Rust environment.
