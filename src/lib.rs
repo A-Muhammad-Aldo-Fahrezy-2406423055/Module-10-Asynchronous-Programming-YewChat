@@ -5,6 +5,7 @@ mod services;
 
 use std::cell::RefCell;
 use std::rc::Rc;
+use serde::{Deserialize, Serialize};
 
 use wasm_bindgen::prelude::*;
 use yew::functional::*;
@@ -14,9 +15,11 @@ use yew_router::prelude::*;
 use components::chat::Chat;
 use components::login::Login;
 
-
-
-
+#[derive(Deserialize, Clone, Debug, PartialEq)]
+pub struct MessageData {
+    pub from: String,
+    pub message: String,
+}
 
 #[cfg(feature = "wee_alloc")]
 #[global_allocator]
@@ -38,6 +41,7 @@ pub type User = Rc<UserInner>;
 #[derive(Debug, PartialEq)]
 pub struct UserInner {
     pub username: RefCell<String>,
+    pub messages: RefCell<Vec<MessageData>>,
 }
 
 #[function_component(Main)]
@@ -45,6 +49,7 @@ fn main() -> Html {
     let ctx = use_state(|| {
         Rc::new(UserInner {
             username: RefCell::new("initial".into()),
+            messages: RefCell::new(Vec::new()),
         })
     });
 
